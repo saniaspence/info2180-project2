@@ -32,29 +32,25 @@ function setTiles()
 					childDivs[n].style.top = "0px";
 					childDivs[n].style.left = "0px";
 					childDivs[n].style.backgroundPosition = '0px 0px';
-					//childDivs[n].style.backgroundPositionY = "0px";
 					n++;
-					//alert(childDivs[n].style.left);
+					
 					continue;
 				}
 				else if(i==0){
 					childDivs[n].style.left = (parseInt(j)) * 100 + "px";
 					childDivs[n].style.top = "0px";
 					childDivs[n].style.backgroundPosition = (parseInt(-j)*100)+ 'px 0px';
-					//childDivs[n].style.backgroundPositionY = "0px";
 				}
 				else if(j==0){
 					childDivs[n].style.left = "0px";
 					childDivs[n].style.top = (parseInt(i)) * 100 + "px";
 					childDivs[n].style.backgroundPosition = '0px '+(parseInt(-i)*100)+ 'px';
-					//childDivs[n].style.backgroundPositionY = (parseInt(-i)*100)+ "px";
 				}
 			}
 			else{
 				childDivs[n].style.top = (parseInt(i)) * 100 + "px";
 				childDivs[n].style.left = (parseInt(j)) * 100 + "px";
 				childDivs[n].style.backgroundPosition = (parseInt(-j)*100)+ 'px '+(parseInt(-i)*100)+ 'px';
-				//childDivs[n].style.backgroundPositionY = (parseInt(-i)*100)+ "px";
 			}
 			n++;
 		}
@@ -209,6 +205,7 @@ function clickCall()
 		currentDiv = this.id;
 
 		interchangeCoords("empty", currentDiv);
+		IsInOrder();
 	}
 	
 
@@ -218,7 +215,8 @@ function clickCall()
 		this.id = parseInt(this.id)-1;
 		currentDiv = this.id;
 
-		interchangeCoords('empty', currentDiv);
+		interchangeCoords("empty", currentDiv);
+		IsInOrder();
 	}
 	
 	if((parseInt(t_y) == parseInt(parseInt(empty_y) - 100)) && (parseInt(l_x) == parseInt(empty_x))){
@@ -228,6 +226,7 @@ function clickCall()
 		currentDiv = this.id;
 		
 		interchangeCoords("empty", currentDiv);
+		IsInOrder();
 	}
 	
 
@@ -238,11 +237,11 @@ function clickCall()
 		currentDiv = this.id;
 
 		interchangeCoords("empty", currentDiv);
+		IsInOrder();
 	}
 }
 
-function addDiv()
-{
+function addDiv(){
 	var adiv = document.createElement("div");
 	adiv.id = "empty";
 	document.getElementById("puzzlearea").appendChild(adiv);
@@ -252,14 +251,12 @@ function addDiv()
 }
 
 
-function mouseOut()
-{
+function mouseOut(){
 	this.className = this.className.replace("movablepiece", '');
 }
 
 
-function interchangeCoords(id1, id2)
-{
+function interchangeCoords(id1, id2){
 	var empty_x = document.getElementById(id1).style.left;
 	var empty_y = document.getElementById(id1).style.top;
 	
@@ -271,5 +268,26 @@ function interchangeCoords(id1, id2)
 	
 	document.getElementById(id2).style.left = empty_x;
 	document.getElementById(id2).style.top = empty_y;
+}
 
+function IsInOrder() {
+	var PDivs = document.getElementById("puzzlearea").getElementsByTagName("div");
+	var inorder = true;
+	
+	for(var i = 0; i < PDivs.length - 1; i++) {
+		
+		var n = parseInt(trim(PDivs[i].innerHTML));
+		var n1 = parseInt(trim(PDivs[i + 1].innerHTML));
+		if(n + 1 != n1){
+			inorder = false;
+			break;
+		}
+	}
+	
+	if(inorder){
+		alert("Solved it!");
+		for(var i = 0; i < PDivs.length; i++) {
+			PDivs[i].style.backgroundColor = "#FFFFCC";
+		}
+	}
 }
